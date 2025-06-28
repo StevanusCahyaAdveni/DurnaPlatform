@@ -10,7 +10,9 @@
         <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
         <a href="{{ route('user-dashboard') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse" wire:navigate>
             <!-- <x-app-logo /> -->
-            <flux:icon.academic-cap /> {{ config('app.name') }}
+             <h1>
+                 <flux:brand style="font-size: 20px" href="user-dashboard" wire:navigate logo="/app-logo.png" name="{{ config('app.name', 'Laravel') }}" />
+             </h1>
         </a>
         <flux:navlist variant="outline">
             <flux:navlist.group :heading="__('Dashboard')" class="grid">

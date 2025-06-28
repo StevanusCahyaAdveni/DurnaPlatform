@@ -1,7 +1,7 @@
 <div>
     <flux:heading size="xl">Upgrade Your Role</flux:heading>
-
-    <div class=" p-6 shadow-lg rounded-lg">
+    <br>
+    <div class=" p-2 shadow-lg rounded-lg">
         <form wire:submit.prevent="upgradeRole">
             <div class="grid grid-cols-2 gap-1">
                 <flux:input label="Email" readonly wire:model="email" placeholder="River" />
@@ -13,7 +13,7 @@
                 </flux:select>
             </div>
             <p align="right">
-                <flux:button variant="primary" color="orange" class="mt-4" type="submit">Upgrade Role</flux:button>
+                <flux:button variant="primary" color="blue" class="mt-4" type="submit">Upgrade Role</flux:button>
             </p>
         </form>
     </div>
