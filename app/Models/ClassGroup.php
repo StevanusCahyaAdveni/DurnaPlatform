@@ -13,6 +13,7 @@ class ClassGroup extends Model
 
     // Menentukan kolom-kolom yang dapat diisi secara massal
     protected $fillable = [
+        'id',
         'class_name',
         'class_code',
         'class_description',

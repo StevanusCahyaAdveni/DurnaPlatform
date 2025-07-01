@@ -1,14 +1,14 @@
 <div>
     <flux:heading size="xl">Teacher Class</flux:heading>
     <flux:modal.trigger name="add-class">
-        <flux:button size="xs" color="primary" class="mb-5 mt-2">[+] Add Class</flux:button>
+        <flux:button size="xs" color="primary" wire:click="upData('')" class="mb-5 mt-2">[+] Add Class</flux:button>
     </flux:modal.trigger>
     <flux:modal name="add-class" class="md:w-100">
         <div class="space-y-6">
             <form wire:submit.prevent="addClass">
                 <div>
-                    <flux:heading size="lg">Add Class</flux:heading>
-                    <flux:text class="mt-2">Add class for your private or public students</flux:text>
+                    <flux:heading size="lg">Class Group</flux:heading>
+                    <flux:text class="mt-2">Class Goup for your private or public students</flux:text>
                 </div>
                 <flux:input label="Class Name" class="mb-3" wire:model="name" placeholder="Your Class Name" />
                 <flux:textarea label="Class Description" class="mb-3" wire:model="description" placeholder="Your Class Description" />
@@ -38,6 +38,8 @@
         @foreach ($classGroups as $data)
         <div class="p-2 shadow-lg rounded-lg">
             <flux:heading size="lg">{{ $data->class_name }}</flux:heading>
+            <flux:badge variant="pill" size="sm" icon="user">{{ $data->name }}</flux:badge>
+            <flux:badge variant="pill" size="sm" icon="user-group">{{ $data->class_category }}</flux:badge>
             <flux:text class="mt-2">{{$data->class_description }}</flux:text>
             <flux:text class="mt-1">
                 <b>
@@ -47,8 +49,10 @@
             <div class="flex">
                 <flux:spacer />
                 <flux:button.group class="mt-3">
-                    <flux:button size="sm" icon="trash"></flux:button>
-                    <flux:button size="sm" icon="pencil"></flux:button>
+                    <flux:button wire:click="deleteClass('{{ $data->id }}')" wire:confirm="Are you sure to delete this data ?" size="sm" icon="trash"></flux:button>
+                    <flux:modal.trigger name="add-class">
+                        <flux:button wire:click="upData('{{ $data->id }}')" size="sm" icon="pencil"></flux:button>
+                    </flux:modal.trigger>
                     <flux:button size="sm" href="https://google.com" icon:trailing="arrow-right">
                         Visit Class
                     </flux:button>
