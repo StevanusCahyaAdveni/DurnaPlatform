@@ -20,8 +20,8 @@
             </flux:navlist.group>
 
             <flux:navlist.group :heading="__('Class')" class="grid">
-                <flux:navlist.item icon="home-modern" :href="route('user-class')" :current="request()->routeIs('user-class')" wire:navigate>{{ __('Your Class') }}</flux:navlist.item>
-                <flux:navlist.item icon="magnifying-glass-circle" :href="route('our-class')" :current="request()->routeIs('our-class')" wire:navigate>{{ __('Our Class') }}</flux:navlist.item>
+                <flux:navlist.item icon="home-modern" :href="route('user-class')" :current="request()->routeIs('user-class') OR request()->routeIs('user-class-detail')" wire:navigate>{{ __('Your Class') }}</flux:navlist.item>
+                <flux:navlist.item icon="magnifying-glass-circle" :href="route('our-class')" :current="request()->routeIs('our-class')" wire:navigate>{{ __('Other Class') }}</flux:navlist.item>
                 <flux:navlist.item icon="book-open" :href="route('teacher-class')" :current="request()->routeIs('teacher-class')" wire:navigate>{{ __('Your Class (As Teacher)') }}</flux:navlist.item>
             </flux:navlist.group>
 

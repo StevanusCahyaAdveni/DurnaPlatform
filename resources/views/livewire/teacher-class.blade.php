@@ -25,40 +25,42 @@
     </flux:modal>
     <br>
     <div class="p-2 shadow-lg rounded-lg">
-        <flux:input wire:model.live="search" class="mb-3" placeholder="Search Class..." />
+        <flux:input wire:model.live="search" class="mb-0" placeholder="Search Class..." />
     </div>
-    <br>
+    {{-- <br> --}}
     @if($classGroups->isEmpty())
     <div class="text-center p-6 bg-white rounded-lg shadow-md">
         <p class="text-gray-600 text-lg">Tidak ada kelas yang ditemukan.</p>
         <p class="text-gray-500 text-sm mt-2">Coba sesuaikan pencarian Anda atau buat kelas baru.</p>
     </div>
     @else
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
         @foreach ($classGroups as $data)
-        <div class="p-2 shadow-lg rounded-lg">
-            <flux:heading size="lg">{{ $data->class_name }}</flux:heading>
-            <flux:badge variant="pill" size="sm" icon="user">{{ $data->name }}</flux:badge>
-            <flux:badge variant="pill" size="sm" icon="user-group">{{ $data->class_category }}</flux:badge>
-            <flux:text class="mt-2">{{$data->class_description }}</flux:text>
-            <flux:text class="mt-1">
-                <b>
-                    Code : {{$data->class_code }}
-                </b>
-            </flux:text>
-            <div class="flex">
-                <flux:spacer />
-                <flux:button.group class="mt-3">
-                    <flux:button wire:click="deleteClass('{{ $data->id }}')" wire:confirm="Are you sure to delete this data ?" size="sm" icon="trash"></flux:button>
-                    <flux:modal.trigger name="add-class">
-                        <flux:button wire:click="upData('{{ $data->id }}')" size="sm" icon="pencil"></flux:button>
-                    </flux:modal.trigger>
-                    <flux:button size="sm" href="https://google.com" icon:trailing="arrow-right">
-                        Visit Class
-                    </flux:button>
-                </flux:button.group>
+        <flux:callout class="shadow-lg rounded-lg">
+            <div class="">
+                <flux:heading size="lg">{{ $data->class_name }}</flux:heading>
+                <flux:badge variant="pill" size="sm" icon="user">{{ $data->name }}</flux:badge>
+                <flux:badge variant="pill" size="sm" icon="user-group">{{ $data->class_category }}</flux:badge>
+                <flux:text class="mt-2 line-clamp-1">{{ Str::limit($data->class_description, 100, '...') }}</flux:text>
+                <flux:text class="mt-1">
+                    <b>
+                        Code : {{$data->class_code }}
+                    </b>
+                </flux:text>
+                <div class="flex">
+                    <flux:spacer />
+                    <flux:button.group class="mt-3">
+                        <flux:button wire:click="deleteClass('{{ $data->id }}')" wire:confirm="Are you sure to delete this data ?" size="sm" icon="trash"></flux:button>
+                        <flux:modal.trigger name="add-class">
+                            <flux:button wire:click="upData('{{ $data->id }}')" size="sm" icon="pencil"></flux:button>
+                        </flux:modal.trigger>
+                        <flux:button size="sm" href="/user-class-detail/{{$data->id}}" wire:navigate icon:trailing="arrow-right">
+                            Visit Class
+                        </flux:button>
+                    </flux:button.group>
+                </div>
             </div>
-        </div>
+        </flux:callout>
         @endforeach
     </div>
     <div class="mt-8">

@@ -8,6 +8,8 @@ use Livewire\Component;
 
 class UpgradeRole extends Component
 {
+    public $User;
+
     public function __construct()
     {
         $this->User = new User();
