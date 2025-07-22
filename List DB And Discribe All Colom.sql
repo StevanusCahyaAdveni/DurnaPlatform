@@ -75,3 +75,14 @@ Buat sebuah migration pada laravel dengan table seperti ini, buat modelnya juga 
 - updated_at
 - delete_at
 
+9. class_task_point with kolom :
+- id use a UUID
+- task_id (get from class_task id)
+- answer_id (get from class_task_answer id)
+- user_id (get from user as point maker)
+- point varchar 50
+- created_at
+- updated_at
+- delete_at
+
+

@@ -11,6 +11,7 @@ class OurClassPreview extends Component
 {
     public $ClassGroup;
     public $classGroupId;
+    public $classCode;
 
     public function __construct()
     {
@@ -43,4 +44,6 @@ class OurClassPreview extends Component
         ClassJoin::where('class_group_id', $this->classGroupId)->where('user_id', Auth::user()->id)->delete();
         session()->flash('message', 'Successfully leave class!');
     }
+
+    
 }

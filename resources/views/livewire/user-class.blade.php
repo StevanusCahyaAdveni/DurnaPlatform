@@ -21,7 +21,8 @@
                 <div class="flex">
                     <flux:spacer />
                     <flux:button.group class="mt-3">
-                        <flux:button wire:navigate href="user-class-detail/{{$data->id}}" size="sm" icon="eye" variant="primary">Visite Class</flux:button>
+                        <flux:button wire:confirm="Are you sure to leave this class ?" wire:click="leaveClass('{{ $data->id }}')" size="sm" icon="trash" variant="danger"></flux:button>
+                        <flux:button wire:navigate href="user-class-detail/{{$data->id}}" size="sm" icon="eye" variant="primary">Visit</flux:button>
                     </flux:button.group>
                 </div>
             </div>

@@ -123,7 +123,7 @@
     @else
         <div class="mb-4">
             <div class="flex">
-                <flux:heading size="lg">Your Answer :</flux:heading>
+                <flux:heading size="lg">Your Answer <sup><flux:badge size="sm">{{ $singleAnswerPoint->point ?? '?'}}</flux:badge></sup>:</flux:heading>
                 @if($singleTask->task_deadline >= now())
                     @if($formStatus == '1')
                         <flux:button type="submit" wire:click="changeForm('2')" variant="primary" color="green" icon="pencil" size="xs" class="flex items-center ml-auto">Edit Answer</flux:button>
@@ -159,6 +159,40 @@
                         {!! $getAnswer->answer_text !!}
                     </div>                
                 </div>
+                <hr class="mb-2">    
+                <div class="flex">
+                    <flux:spacer />
+                    <flux:modal.trigger name="add-coments" class="mt-2">
+                        <flux:button size="xs" variant="primary">Add Coments</flux:button>
+                    </flux:modal.trigger>
+                </div>    
+                <flux:modal name="add-coments" class="md:w-96">
+                    <div class="space-y-6">
+                        <div>
+                            <flux:heading size="lg">Add Coments</flux:heading>
+                        </div>
+                        <flux:input type="file" wire:model="commentMedia" label="Upload Media (Optional)" class="mb-4"/>
+                        <flux:textarea label="Add Coments" wire:model="commentText" placeholder="Coments about this answer" class="mb-2"/>
+                        <div class="flex">
+                            <flux:spacer />
+                            <flux:button type="button" size="sm" x-on:click="$flux.modals().close()"  wire:click="addComent()" variant="primary">Save changes</flux:button>
+                        </div>
+                    </div>
+                </flux:modal>
+                @foreach($taskAnswersComments as $comment)
+                    <div class="flex items-center gap-1 mt-3">
+                        <flux:avatar name="{{ $comment->commenter_name }}" size="xs"/>
+                        <div>
+                            <flux:heading>{{ $comment->commenter_name}}</flux:heading>
+                        </div>
+                    </div>
+                    @if($comment->comment_media)
+                    <flux:callout class="mt-2" style="max-width: 200px;">
+                        <flux:button variant="primary" target="_blank" size="xs" href="{{ asset('storage/task_media') }}/{{ $comment->comment_media }}" frameborder="0" icon="eye">Show Media</flux:button>
+                    </flux:callout>
+                    @endif
+                    <flux:text class="text-sm mt-2">{{ $comment->comment_text }}</flux:text>
+                @endforeach
                 {{-- End Jawaban Soal yang sudah diajawa  --}}
                 @elseif($formStatus == '2')
                 <div>

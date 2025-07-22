@@ -22,7 +22,9 @@
             <flux:navlist.group :heading="__('Class')" class="grid">
                 <flux:navlist.item icon="home-modern" :href="route('user-class')" :current="request()->routeIs('user-class') OR request()->routeIs('user-class-detail')" wire:navigate>{{ __('Your Class') }}</flux:navlist.item>
                 <flux:navlist.item icon="magnifying-glass-circle" :href="route('our-class')" :current="request()->routeIs('our-class')" wire:navigate>{{ __('Other Class') }}</flux:navlist.item>
+                @if(auth()->user()->role == 'teacher' || auth()->user()->role == 'teacher-v2')
                 <flux:navlist.item icon="book-open" :href="route('teacher-class')" :current="request()->routeIs('teacher-class')" wire:navigate>{{ __('Your Class (As Teacher)') }}</flux:navlist.item>
+                @endif
             </flux:navlist.group>
 
             @if(auth()->user()->role == 'teacher' || auth()->user()->role == 'teacher-v2')
@@ -30,11 +32,15 @@
                 <flux:navlist.item icon="book-open" :href="route('teacher-task')" :current="request()->routeIs('teacher-task')" wire:navigate>{{ __('Task (As Teacher)') }}</flux:navlist.item>
                 <flux:navlist.item icon="pencil" :href="route('teacher-exam')" :current="request()->routeIs('teacher-exam')" wire:navigate>{{ __('Exam (As Teacher)') }}</flux:navlist.item>
             </flux:navlist.group>
-
             @endif
-            <flux:navlist.group :heading="__('Role & User')" class="grid">
-                <flux:navlist.item icon="adjustments-vertical" :href="route('upgrade-role')" :current="request()->routeIs('upgrade-role')" wire:navigate>{{ __('Upgrade Your Role') }}</flux:navlist.item>
+
+            <flux:navlist.group :heading="__('Ask AI')" class="grid">
+                <flux:navlist.item icon="light-bulb" :href="route('ai-chat')" :current="request()->routeIs('ai-chat')" wire:navigate>{{ __('Chat with AI') }}</flux:navlist.item>
             </flux:navlist.group>
+            
+            {{-- <flux:navlist.group :heading="__('Role & User')" class="grid"> --}}
+                {{-- <flux:navlist.item icon="adjustments-vertical" :href="route('upgrade-role')" :current="request()->routeIs('upgrade-role')" wire:navigate>{{ __('Upgrade Your Role') }}</flux:navlist.item> --}}
+            {{-- </flux:navlist.group> --}}
 
         </flux:navlist>
 
@@ -81,6 +87,9 @@
                 <flux:menu.radio.group>
                     <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>{{ __('Settings') }}</flux:menu.item>
                 </flux:menu.radio.group>
+                <flux:menu.separator />
+
+                <flux:menu.item icon="adjustments-vertical" :href="route('upgrade-role')" :current="request()->routeIs('upgrade-role')" wire:navigate>{{ __('Upgrade Your Role') }}</flux:menu.item>
 
                 <flux:menu.separator />
 
@@ -129,7 +138,11 @@
                 <flux:menu.radio.group>
                     <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>{{ __('Settings') }}</flux:menu.item>
                 </flux:menu.radio.group>
+                <flux:menu.separator />
+                
+                <flux:menu.item icon="adjustments-vertical" :href="route('upgrade-role')" :current="request()->routeIs('upgrade-role')" wire:navigate>{{ __('Upgrade Your Role') }}</flux:menu.item>
 
+                <flux:menu.separator />
                 <flux:menu.separator />
 
                 <form method="POST" action="{{ route('logout') }}" class="w-full">

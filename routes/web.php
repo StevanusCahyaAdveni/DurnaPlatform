@@ -14,7 +14,9 @@ use App\Livewire\TeacherTask;
 use App\Livewire\TeacherExam;
 use App\Livewire\UpgradeRole;
 use App\Livewire\UserTaskAnswer;
-use App\Models\ClassTaskAnswer;
+use App\Livewire\TeacherTaskAnswer;
+use App\Livewire\AiChat;
+// use App\Models\ClassTaskAnswer;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -48,6 +50,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/teacher-class', TeacherClass::class)->name('teacher-class');
     Route::get('/teacher-task', TeacherTask::class)->name('teacher-task');
     Route::get('/teacher-exam', TeacherExam::class)->name('teacher-exam');
+    Route::get('/teacher-task-answer/{id}', TeacherTaskAnswer::class)->name('teacher-task-answer');
+
+    // AI Chat
+    Route::get('/ai-chat', AiChat::class)->name('ai-chat');
 
     // User create and manage tasks answer
     Route::get('/user-task-answer/{id}', UserTaskAnswer::class)->name('user-task-answer');

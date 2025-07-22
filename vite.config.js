@@ -17,8 +17,9 @@ export default defineConfig({
         // port: 5173,
         hmr: {
             // Konfigurasi HMR (Hot Module Replacement) jika ada masalah koneksi
-            host: "192.168.1.195", // Atau alamat IP lokal komputermu, misal '192.168.1.100'
+            host: "192.168.18.11", // Atau alamat IP lokal komputermu, misal '192.168.1.100'
             protocol: "ws", // Gunakan 'wss' jika kamu menggunakan HTTPS
         },
     },
+    // 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
 });

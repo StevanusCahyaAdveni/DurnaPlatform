@@ -33,4 +33,18 @@ class UserClass extends Component
             'classUser' => $classUser
         ]);
     }
+
+    public function leaveClass($classId)
+    {
+        $classJoin = ClassJoin::where('user_id', Auth::id())
+            ->where('class_group_id', $classId)
+            ->first();
+
+        if ($classJoin) {
+            $classJoin->delete();
+            session()->flash('message', 'You have left the class successfully.');
+        } else {
+            session()->flash('error', 'You are not a member of this class.');
+        }
+    }
 }

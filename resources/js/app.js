@@ -1,14 +1,18 @@
 // resources/js/app.js
 
-// import "./bootstrap"; // Pastikan ini ada jika kamu menggunakan Bootstrap JS
-// import * as bootstrap from "bootstrap"; // Jika kamu mengimpor Bootstrap JS secara eksplisit
+// HAPUS SEMUA BARIS IMPORT FIREBASE DI SINI!
+// import { initializeApp } from 'firebase/app';
+// import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
+// import { getFirestore, collection, doc, setDoc, query, orderBy, onSnapshot } from 'firebase/firestore';
 
-// Import Trix CSS
-// resources/js/app.js
-import 'trix/dist/trix.css'; // Import Trix CSS
-import 'trix'; // Import Trix JS
-// ... kode JS lainnya
+// Pastikan ini ada jika Anda menggunakan Bootstrap atau JS lain
+// import "./bootstrap";
 
-// Import Trix JS
-// import Trix from "trix";
-// window.Trix = Trix; // Opsional: membuat Trix tersedia secara global
+// Pastikan Alpine.js dimuat
+// import Alpine from "alpinejs";
+// window.Alpine = Alpine;
+// Alpine.start();
+
+// Tidak perlu lagi mengatur window.firebase secara eksplisit di sini
+// karena CDN compat SDK sudah melakukannya secara otomatis.
+// Kode Alpine.js di Blade akan langsung menggunakan objek `firebase` global.

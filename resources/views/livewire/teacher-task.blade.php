@@ -41,7 +41,7 @@
                                             {{-- Tombol Aksi (misalnya Edit, Delete) --}}
                                             <flux:button.group>
                                                 {{-- <flux:button size="sm" wire:click="upDataForUpdate('{{ $task->id }}')" variant="primary" hidden icon="pencil"></flux:button> --}}
-                                                <flux:button size="xs"  variant="primary" icon="eye"></flux:button>
+                                                <flux:button size="xs" href="/teacher-task-answer/{{ $task->id }}" wire:navigate variant="primary" icon="eye"></flux:button>
                                                 <flux:button size="xs" wire:confirm="Are you sure to delete this data ?" wire:click="deleteTask('{{ $task->id }}')" variant="danger" icon="trash"></flux:button>
                                             </flux:button.group>
                                         </td>

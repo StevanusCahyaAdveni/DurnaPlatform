@@ -12,6 +12,7 @@ class OurClass extends Component
     use WithPagination;
     public $search = "";
     public $ClassGroup;
+    public $classCode;
     public $user_id;
 
     public function __construct()
@@ -44,5 +45,22 @@ class OurClass extends Component
         return view('livewire.our-class', [
             'classGroups' => $classGroups,
         ]);
+    }
+
+    public function srcByCode()
+    {
+        $this->validate([
+            'classCode' => 'required|string',
+        ]);
+
+        $class = ClassGroup::where('class_code', $this->classCode)->first();
+
+        if ($class) {
+            // $this->classCode = $class->id;
+            // session()->flash('message', 'Class found successfully!');
+            return redirect()->route('our-class-preview', ['id' => $class->id]);
+        } else {
+            session()->flash('error', 'Class not found with the provided code.');
+        }
     }
 }
