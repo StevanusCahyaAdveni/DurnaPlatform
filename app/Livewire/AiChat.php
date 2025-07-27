@@ -16,7 +16,7 @@ class AiChat extends Component
     public $chatHistory = [];
 
     // Properti untuk API Key OpenRouter (diambil dari input user)
-    public $openRouterApiKey = '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';
+    public $openRouterApiKey = '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';
 
     // Properti untuk status loading AI response
     public $isLoading = false;  // PASTIKAN ini ada dan public
