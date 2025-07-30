@@ -29,7 +29,7 @@ class UserDashboard extends Component
                 ->get(),
             'AvgScoreClass' => ClassTask::join('class_groups', 'class_tasks.class_group_id', '=', 'class_groups.id')
                 ->where('class_groups.user_id', $this->userId)->get(),
-                
+            'TaskAnswered' => ClassTaskAnswer::where('user_id',  $this->userId)->count(),
                 
         ];
         return view('livewire.user-dashboard', $data);

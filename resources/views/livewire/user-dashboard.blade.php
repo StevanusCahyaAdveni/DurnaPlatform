@@ -51,7 +51,20 @@
         </div>
         <div class="w-full mt-2 md:w-12/12">
             <flux:callout>
-                
+                <flux:callout.text>Task Answereds</flux:callout.text>
+                <div class="w-full">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-medium">Progress</span>
+                        <span class="text-xs font-medium">
+                            {{ $TaskAnswered }} / {{ $AvgScoreClass->count() }}
+                        </span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-3">
+                        <div class="bg-blue-600 h-3 rounded-full transition-all duration-300"
+                             style="width: {{ $AvgScoreClass->count() > 0 ? ($TaskAnswered / $AvgScoreClass->count()) * $AvgScoreClass->count() : 0 }}%">
+                        </div>
+                    </div>
+                </div>
             </flux:callout>
         </div>
     </div>
