@@ -22,6 +22,7 @@ class UserClassDetail extends Component
 
     public $layoutStatus = 'tasks';
     protected $listeners = ['messageSent', 'loadMore'];
+    public $searchPeople = '';
 
     public function mount($id)
     {
@@ -73,10 +74,17 @@ class UserClassDetail extends Component
         $this->allMessagesLoaded = ($this->perPage >= $totalChatCount);
         $this->isLoadingMore = false; // Reset loading state after render
 
+        $classPeople = ClassJoin::join('users', 'class_joins.user_id', '=', 'users.id')->join('class_groups', 'class_joins.class_group_id', '=', 'class_groups.id')->select('class_joins.*', 'users.name', 'users.email', 'users.role', 'class_groups.user_id as owner')->where('class_group_id', $this->classGroupId);
+        if ($this->searchPeople != '') {
+            $classPeople->where('users.name', 'like', '%' . $this->searchPeople . '%');
+        }
+        $classPeople = $classPeople->get();
+
         return view('livewire.user-class-detail', [
             'singleClass' => $this->singleClass, // Use the already initialized property
             'classChat' => $classChat,
             'classTask' => $classTask,
+            'classPeople' => $classPeople,
         ]);
     }
 
@@ -122,5 +130,13 @@ class UserClassDetail extends Component
     public function changeLayoutStatus($status)
     {
         $this->layoutStatus = $status;
+    }
+
+    public function deletePeople($id)
+    {
+        // Validate the user has permission to delete this person
+        $classJoin = ClassJoin::where('id', $id)->where('class_group_id', $this->classGroupId)->first();
+        $classJoin->delete();
+        session()->flash('message', 'Person removed successfully.');
     }
 }

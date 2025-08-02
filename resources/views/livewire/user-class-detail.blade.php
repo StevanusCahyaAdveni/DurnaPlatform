@@ -1,13 +1,22 @@
 <div>
     <flux:heading size="xl">{{ $singleClass->class_name }}</flux:heading>
-    <flux:navbar>
-        <flux:navbar.item :current="$layoutStatus === 'tasks'" wire:click="changeLayoutStatus('tasks')" icon="book-open">Tasks</flux:navbar.item>
-        <flux:navbar.item :current="$layoutStatus === 'chats'" wire:click="changeLayoutStatus('chats')" icon="chat-bubble-left-ellipsis">Chats</flux:navbar.item>
-        <flux:navbar.item :current="$layoutStatus === 'exams'" wire:click="changeLayoutStatus('exams')" icon="clipboard-document-check">Exams</flux:navbar.item>
+    <flux:navbar class="flex justify-between md:justify-start lg:justify-start items-center">
+        <flux:tooltip content="Tasks" position="bottom">
+            <flux:navbar.item :current="$layoutStatus === 'tasks'" wire:click="changeLayoutStatus('tasks')" icon="book-open"></flux:navbar.item>
+        </flux:tooltip>
+        <flux:tooltip content="Chats" position="bottom">
+            <flux:navbar.item :current="$layoutStatus === 'chats'" wire:click="changeLayoutStatus('chats')" icon="chat-bubble-left-ellipsis"></flux:navbar.item>
+        </flux:tooltip>
+        <flux:tooltip content="Exams" position="bottom">
+            <flux:navbar.item :current="$layoutStatus === 'exams'" wire:click="changeLayoutStatus('exams')" icon="clipboard-document-check"></flux:navbar.item>
+        </flux:tooltip>
+        <flux:tooltip content="People" position="bottom">
+            <flux:navbar.item :current="$layoutStatus === 'people'" wire:click="changeLayoutStatus('people')" icon="users"></flux:navbar.item>
+        </flux:tooltip>
     </flux:navbar>
     <hr>
-    @if ($layoutStatus === 'tasks')
     <br>
+    @if ($layoutStatus === 'tasks')
         <flux:input size="sm" placeholder="Searching..." wire:model.live="taskSearch" class="mb-3" />
         {{-- Show tasks layout --}}
         @foreach($classTask as $task)
@@ -153,5 +162,39 @@
                 // The x-data init function in the chat container handles both initial scroll and scroll on new messages.
             </script>
         </div>
+    @elseif ($layoutStatus === 'exams')
+    @elseif ($layoutStatus === 'people')
+        <flux:callout>
+            <div>
+                <flux:input type="text" placeholder="Search..."  size="sm" wire:model.live="searchPeople" />
+            </div>
+            <flux:separator class="mt-2 mb-4" variant="subtle" />
+            <ul class="flex flex-col gap-3">
+                @foreach($classPeople as $person)
+                <li class=":hover:bg-gray-100 dark:hover:bg-gray-700 hover:p-2 rounded-lg transition-colors duration-200">
+                    <div class="flex justify-between items-center mb-0">
+                        <div class="flex items-center gap-2">
+                            <flux:avatar name="{{ $person->name }}" size="xs"/>
+                            <div>
+                                <flux:heading >{{ $person->name }}</flux:heading>
+                                @if($person->owner == $person->user_id)
+                                    <flux:text class="text-xs">{{ $person->email }} <span style="text-transform: capitalize">({{ $person->role == 'user' ? 'Student' : (auth()->user()->id === $person->user_id ? 'You' : 'Student') }} As <b>Owner</b>)</span></flux:text>
+                                @else
+                                    <flux:text class="text-xs">{{ $person->email }} <span style="text-transform: capitalize">({{ $person->role == 'user' ? 'Student' : (auth()->user()->id === $person->user_id ? 'You' : 'Student') }})</span></flux:text>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="">
+                            @if($person->user_id != auth()->user()->id)
+                                @if($person->owner == auth()->user()->id)
+                                    <flux:button variant="danger" wire:click="deletePeople('{{ $person->id }}')" wire:confirm="Are you sure to delete this data ?" icon="trash" size="xs"></flux:button>
+                                @endif
+                            @endif
+                        </div>
+                    </div>
+                </li>
+                @endforeach
+            </ul>
+        </flux:callout>
     @endif
 </div>
