@@ -18,6 +18,9 @@ class ClassGroup extends Model
         'class_code',
         'class_description',
         'class_category',
+        'price',
+        'subscription',
+        'participants',
         'user_id',
     ];
 

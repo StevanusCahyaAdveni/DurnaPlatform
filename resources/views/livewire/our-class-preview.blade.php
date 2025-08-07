@@ -1,17 +1,28 @@
 <div>
-    <flux:heading size="xl" class="mb-3">{{$singleData->class_name}}</flux:heading>
-    <flux:badge variant="pill" size="sm" icon="user">{{$singleData->name}}</flux:badge>
-    <flux:badge variant="pill" size="sm" icon="user-group">{{$singleData->class_category}}</flux:badge>
-    <div class="p-2 shadow-lg rounded-lg mt-3">
+    <flux:heading size="xl" class="mb-0">{{$singleData->class_name}}</flux:heading>
+    <flux:badge variant="pill" size="sm" class="mb-2" icon="user">{{$singleData->name}}</flux:badge>
+    <flux:badge variant="pill" size="sm" class="mt-2" icon="user-group">{{$singleData->class_category}} ({{$singleData->participants}} Max Members)</flux:badge>
+    <flux:badge variant="pill" size="sm" class="mt-2" color="green" icon="">Rp {{ number_format($singleData->price,0,0,'.')}}/{{$singleData->subscription}}</flux:badge>
+    <flux:callout class="shadow-lg rounded-lg mt-3">
         <flux:text>{{$singleData->class_description}}</flux:text>
-
-        @if($getJoin == 0)
-            <flux:modal.trigger name="JoinClass">
-                <flux:button size="sm" class="mt-5" icon="user-plus">Join Class</flux:button>
-            </flux:modal.trigger>
-        @elseif($getJoin >= 1)
-            <flux:button variant="danger" size="sm" class="mt-5" icon="user-minus" wire:click="leaveClass()">Leave Class</flux:button>
-            <flux:button variant="primary" href="/user-class-detail/{{$singleData->id}}" wire:navigate size="sm" class="mt-5" icon="user-minus" >Visite Class</flux:button>
+        <flux:text>
+            <b>Current member : {{$currentMembers}}</b>
+        </flux:text>
+        @if(Auth::user()->id != $singleData->user_id)
+            @if($getJoin == 0)
+                @if($currentMembers <= $singleData->participants)
+                    <flux:modal.trigger name="JoinClass">
+                        <flux:button size="sm" class="mt-5" icon="user-plus">Join Class</flux:button>
+                    </flux:modal.trigger>
+                @endif
+            @elseif($getJoin >= 1)
+                <flux:button.group>
+                    <flux:button variant="danger" size="sm" class="mt-5" icon="user-minus" wire:click="leaveClass()" wire:confirm="Are you sure to leave this class ?">Leave Class</flux:button>
+                    <flux:button variant="primary" href="/user-class-detail/{{$singleData->id}}" wire:navigate size="sm" class="mt-5" icon="arrow-right" >Visite Class</flux:button>
+                </flux:button.group>
+            @endif
+        @else
+            <flux:button variant="primary" href="/user-class-detail/{{$singleData->id}}" wire:navigate size="sm" class="mt-5" icon="arrow-right" >Visite Class</flux:button>   
         @endif
         
         <flux:modal name="JoinClass" class="md:w-96">
@@ -28,5 +39,5 @@
                 </form>
             </div>
         </flux:modal>
-    </div>
+    </flux:call>
 </div>

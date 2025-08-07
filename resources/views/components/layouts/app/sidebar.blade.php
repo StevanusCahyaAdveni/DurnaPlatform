@@ -37,6 +37,18 @@
             <flux:navlist.group :heading="__('Ask AI')" class="grid">
                 <flux:navlist.item icon="light-bulb" :href="route('ai-chat')" :current="request()->routeIs('ai-chat')" wire:navigate>{{ __('Chat with AI') }}</flux:navlist.item>
             </flux:navlist.group>
+
+            <flux:navlist.group expandable heading="Income & Outcome" class="grid" :expanded="request()->routeIs('user-income') || request()->routeIs('invoice-history')">
+                <flux:navlist.item icon="credit-card" :href="route('user-income')" :current="request()->routeIs('user-income')" wire:navigate>{{ __('Income & Top Up') }}</flux:navlist.item>
+                <flux:navlist.item icon="credit-card" :href="route('invoice-history')" :current="request()->routeIs('invoice-history')" wire:navigate>{{ __('Subscription History') }}</flux:navlist.item>
+            </flux:navlist.group>
+
+            <br>
+            <flux:radio.group x-data variant="segmented" x-model="$flux.appearance">
+                <flux:radio size="sm" value="light" icon="sun">{{ __('') }}</flux:radio>
+                <flux:radio size="sm" value="dark" icon="moon">{{ __('') }}</flux:radio>
+                <flux:radio size="sm" value="system" icon="computer-desktop">{{ __('') }}</flux:radio>
+            </flux:radio.group>
             
             {{-- <flux:navlist.group :heading="__('Role & User')" class="grid"> --}}
                 {{-- <flux:navlist.item icon="adjustments-vertical" :href="route('upgrade-role')" :current="request()->routeIs('upgrade-role')" wire:navigate>{{ __('Upgrade Your Role') }}</flux:navlist.item> --}}

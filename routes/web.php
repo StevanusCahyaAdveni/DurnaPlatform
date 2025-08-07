@@ -16,6 +16,8 @@ use App\Livewire\UpgradeRole;
 use App\Livewire\UserTaskAnswer;
 use App\Livewire\TeacherTaskAnswer;
 use App\Livewire\AiChat;
+use App\Livewire\UserIncome;
+use App\Livewire\InvoiceHistory;
 // use App\Models\ClassTaskAnswer;
 use Illuminate\Support\Facades\Route;
 
@@ -57,6 +59,10 @@ Route::middleware(['auth'])->group(function () {
 
     // User create and manage tasks answer
     Route::get('/user-task-answer/{id}', UserTaskAnswer::class)->name('user-task-answer');
+
+    // User Money Income
+    Route::get('/user-income', UserIncome::class)->name('user-income');
+    Route::get('/invoice-history', InvoiceHistory::class)->name('invoice-history');
 
     // User
     Route::get('/upgrade-role', UpgradeRole::class)->name('upgrade-role');

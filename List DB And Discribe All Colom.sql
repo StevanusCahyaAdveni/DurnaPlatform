@@ -85,4 +85,57 @@ Buat sebuah migration pada laravel dengan table seperti ini, buat modelnya juga 
 - updated_at
 - delete_at
 
+10. course with kolom :
+- id use a UUID
+- course_name varchar 250
+- course_code varchar 10
+- course_description text
+- course_categori varchar 50 defaulnya public
+- user_id (get from user as maker the course)
+- price varchar 50
+- course_thumbnail varchar 500
+- created_at
+- updated_at
+- delete_at
 
+12. course_join with kolom :
+- id use a UUID
+- course_id (get from course id)
+- user_id (get from user as joined user)
+- created_at
+- updated_at
+- delete_at
+
+13. course_video with kolom :
+- id use a UUID
+- course_id (get from course id)
+- video_title varchar 250
+- video_description varchar 250
+- video_name varchar 250
+- video_thumbnail varchar 500
+- created_at
+- updated_at
+- delete_at
+
+14. subscription with kolom :
+- id use a UUID
+- tipe (class, course)
+- class_uuid (get from class_group id)
+- course_uuid (get from course id)
+- user_id (get from user as subscriber)
+- nominal varchar 50
+- payment_method varchar 50
+- expired_at datetime
+- created_at
+- updated_at
+- delete_at
+
+15. income with kolom :
+- id use a UUID
+- user_id (get from user as income maker)
+- nominal varchar 50
+- payment_method varchar 50
+- status varchar 50 defaultnya pending
+- created_at
+- updated_at
+- deleted_at

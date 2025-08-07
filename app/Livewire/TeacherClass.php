@@ -20,6 +20,9 @@ class TeacherClass extends Component
     public $classGroupId = ""; // Default to current timestamp as class code
     public $listenersForm = "Add"; // Default to current timestamp as class code
     public $category="Public";
+    public $price = '0'; // Default price
+    public $subscription = 'monthly'; // Default subscription type
+    public $participants = '50'; // Default participants
 
     public function __construct()
     {
@@ -66,6 +69,9 @@ class TeacherClass extends Component
             'description' => 'required|string|max:1000',
             'code' => 'required|string|max:10|unique:class_groups,class_code',
             'category' => 'required|string|in:Public,Private',
+            'price' => 'required|string|max:50',
+            'subscription' => 'nullable|in:monthly,yearly,one_time',
+            'participants' => 'required|string|max:100',
         ]);
 
         if($this->listenersForm == "Update"){
@@ -74,6 +80,9 @@ class TeacherClass extends Component
             if ($classGroup) {
                 $classGroup->where('id', $this->classGroupId)->update([
                     'class_name' => $this->name,
+                    'price' => $this->price,
+                    'subscription' => $this->subscription,
+                    'participants' => $this->participants,
                     'class_description' => $this->description,
                     // 'class_code' => $this->code,
                     'class_category' => $this->category,
@@ -87,6 +96,9 @@ class TeacherClass extends Component
         }else{
             ClassGroup::create([
                 'class_name' => $this->name,
+                'price' => $this->price,
+                'subscription' => $this->subscription,
+                'participants' => $this->participants,
                 'class_description' => $this->description,
                 'class_code' => $this->code,
                 'class_category' => $this->category,
@@ -95,7 +107,7 @@ class TeacherClass extends Component
         }
         
         $this->code = random_int(1000, 9999) . "-" . random_int(10000, 99999); // Set default class code to current timestamp
-        $this->reset(['name', 'description', 'category']); // Reset form fields
+        $this->reset(['name', 'description', 'category', 'price', 'subscription', 'participants']); // Reset form fields
         session()->flash('message', 'Class successfully added!');
     }
 
@@ -112,6 +124,9 @@ class TeacherClass extends Component
                 $this->description = $getClass->class_description;
                 $this->code = $getClass->class_code;
                 $this->category = $getClass->class_category;
+                $this->price = $getClass->price;
+                $this->subscription = $getClass->subscription;
+                $this->participants = $getClass->participants;
                 $this->classGroupId = $getClass->id; // Set
                 $this->listenersForm = "Update"; // Change listener to Update
             } else {

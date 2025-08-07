@@ -4,7 +4,7 @@
     <div class="p-2 shadow-lg rounded-lg">
         <flux:input wire:model.live="searchClass" class="mb-0" size="sm" placeholder="Search Class..." />
     </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">
         @foreach ($classUser as $data)
         <flux:callout class="shadow-lg rounded-lg">
             

@@ -6,12 +6,15 @@ use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use App\Models\ClassGroup;
 use App\Models\ClassJoin;
+use App\Models\Subscription;
 
 class OurClassPreview extends Component
 {
     public $ClassGroup;
     public $classGroupId;
     public $classCode;
+    public $singleDataController;
+    public $currentMembersController;
 
     public function __construct()
     {
@@ -21,22 +24,47 @@ class OurClassPreview extends Component
     public function mount($id){
         $this->classGroupId = $id;
     }
-
+    
     public function render()
     {
+        $this->singleDataController = ClassGroup::join('users', 'class_groups.user_id', '=', 'users.id')->select('class_groups.*', 'users.name')->where('class_groups.id', $this->classGroupId)->first();
+        $this->currentMembersController = ClassJoin::where('class_group_id', $this->classGroupId)->count();
         $data = [
-            'singleData' => ClassGroup::join('users', 'class_groups.user_id', '=', 'users.id')->select('class_groups.*', 'users.name')->where('class_groups.id', $this->classGroupId)->first(),
+            'singleData' => $this->singleDataController,
             'getJoin' => ClassJoin::where('class_group_id', $this->classGroupId)->where('user_id', Auth::user()->id)->count(),
+            'currentMembers' => $this->currentMembersController,
         ];
         return view('livewire.our-class-preview', $data);
     }
 
     public function joinClass(){
-        ClassJoin::create([
-            'class_group_id' => $this->classGroupId,
-            'user_id' => Auth::user()->id
-        ]);
-        session()->flash('message', 'Successfully join class!');
+        if($this->singleDataController->participants > $this->currentMembersController){
+            // User can join the class
+            if($this->singleDataController->subscription == 'monthly'){ // Use the set price for other subscriptions
+                $expiredAt = now()->addMonth();
+            }elseif($this->singleDataController->subscription == 'yearly'){
+                $expiredAt = now()->addYear();
+            }else {
+                // Set an arbitrary far future date for one-time subscription
+                $expiredAt = '9999-12-31';
+            }
+
+            Subscription::create([
+                'tipe' => 'class',
+                'class_uuid' => $this->classGroupId,
+                'course_uuid' => null, // Assuming this is not applicable for class joins
+                'user_id' => Auth::user()->id,
+                'nominal' => $this->singleDataController->price, // Assuming no fee for joining classes
+                'payment_method' => 'Qris BCA', // Assuming free join
+                'expired_at' => $expiredAt // Assuming a year validity for the join
+            ]);
+            ClassJoin::create([
+                'class_group_id' => $this->classGroupId,
+                'user_id' => Auth::user()->id
+            ]);
+            session()->flash('message', 'Successfully join class!');
+        }
+
         // Flux::modals()->close();
     }
     
