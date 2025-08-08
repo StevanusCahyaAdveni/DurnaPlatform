@@ -15,9 +15,6 @@ class AiChat extends Component
     // Properti untuk menyimpan riwayat chat (akan disinkronkan dari Firestore melalui JS)
     public $chatHistory = [];
 
-    // Properti untuk API Key OpenRouter (diambil dari input user)
-    public $openRouterApiKey = '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';
-
     // Properti untuk status loading AI response
     public $isLoading = false;  // PASTIKAN ini ada dan public
 
@@ -98,9 +95,15 @@ class AiChat extends Component
             return;
         }
 
+        // Pastikan API key tersedia di konfigurasi
+        $openRouterApiKey = config('services.openrouter.api_key');
+        if (!$openRouterApiKey) {
+            session()->flash('error_message', 'OpenRouter API Key tidak ditemukan di konfigurasi.');
+            return;
+        }
+
         $this->validate([
             'newMessage' => 'required|string|max:2000', // Batasi panjang pesan
-            'openRouterApiKey' => 'required|string', // Pastikan API Key ada
         ]);
 
         // Gunakan Auth::id() langsung
@@ -136,10 +139,13 @@ class AiChat extends Component
     private function getAiResponse()
     {
         try {
+            // Ambil API key dari konfigurasi
+            $openRouterApiKey = config('services.openrouter.api_key');
+
             $response = Http::withHeaders([
-                'Authorization' => 'Bearer ' . $this->openRouterApiKey,
+                'Authorization' => 'Bearer ' . $openRouterApiKey,
                 'Content-Type' => 'application/json',
-            ])->timeout(30)->post('https://openrouter.ai/api/v1/chat/completions', [
+            ])->timeout(120)->post('https://openrouter.ai/api/v1/chat/completions', [
                 'model' => 'deepseek/deepseek-chat',
                 'messages' => collect($this->chatHistory)->map(fn($msg) => [
                     'role' => $msg['role'],

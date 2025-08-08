@@ -4,8 +4,8 @@
         <flux:text class="mb-4 mt-0 text-center text-xs">The AI is made using the DeepSeekV3 model and will continue to develop</flux:text>
 
         {{-- Info User --}}
-        <div class="mb-1 p-2 bg-blue-50 border border-blue-200 rounded-lg text-center">
-            <small class="text-blue-600">
+        <div class="mb-1 p-2 border border-blue-200 rounded-lg text-center">
+            <small class="">
                 Hai {{ Auth::user()->name }} ({{ Auth::user()->id }})
             </small>
         </div>
@@ -36,10 +36,10 @@
         @endif
 
         {{-- Chat Area --}}
-        <div class="flex flex-col h-[60vh] border mb-0 mt-0 border-gray-200 rounded-lg overflow-hidden shadow-sm">
-            <div class="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50" id="chatContainer">
+        <div class="flex flex-col h-[60vh] border mb-0 mt-0 rounded-lg overflow-hidden shadow-sm">
+            <div class="flex-1 overflow-y-auto p-4 space-y-4 " id="chatContainer">
                 @if(empty($chatHistory))
-                    <div class="text-center text-gray-500 py-8">
+                    <div class="text-center  py-8">
                         <p>No conversation yet. Start chatting with AI!</p>
                         <p class="text-xs mt-2">Messages will be saved until you log out</p>
                     </div>
@@ -81,14 +81,14 @@
             </div>
 
             {{-- Input Area --}}
-            <div class="border-t border-gray-200 p-4 bg-white">
+            <div class="border-t text-black border-gray-200 p-4 ">
                 <form wire:submit.prevent="sendMessage">
                     <div class="flex items-center space-x-2">
                         <div class="flex-grow">
                             <flux:input type="text" 
                                       wire:model.defer="newMessage" 
                                       placeholder="Ketik pesan Anda..." 
-                                      class="w-full"
+                                      class="w-full text-black"
                                       wire:keydown.enter.prevent="sendMessage"
                                       required />
                         </div>

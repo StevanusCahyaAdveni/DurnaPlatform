@@ -37,10 +37,31 @@
             <flux:navlist.group :heading="__('Ask AI')" class="grid">
                 <flux:navlist.item icon="light-bulb" :href="route('ai-chat')" :current="request()->routeIs('ai-chat')" wire:navigate>{{ __('Chat with AI') }}</flux:navlist.item>
             </flux:navlist.group>
+            
+            <flux:navlist.group :heading="__('Saldo & Top Up')" class="grid">
+                @php
+                    // Calculate balance from 3 tables: Income + Withdrawals - Subscriptions
+                    $getIncome = \App\Models\Income::where('user_id', auth()->id())
+                        ->where('status', 'paid')
+                        ->sum('nominal') ?? 0;
+                    
+                    $getWithdrawals = \App\Models\Withdrawal::where('user_id', auth()->id())
+                        ->where('status', 'completed')
+                        ->sum('total_amount') ?? 0;
+                    
+                    $getSubscription = \App\Models\Subscription::where('user_id', auth()->id())->sum('nominal') ?? 0;
+                    $getIncomeClassBySubscription = \App\Models\Subscription::join('class_groups', 'class_groups.id', '=', 'subscriptions.class_uuid')->where('class_groups.user_id', auth()->id())->sum('nominal') ?? 0;
+                    $getIncomeCourseBySubscription = \App\Models\Subscription::join('courses', 'courses.id', '=', 'subscriptions.course_uuid')->where('courses.user_id', auth()->id())->sum('nominal') ?? 0;
 
-            <flux:navlist.group expandable heading="Income & Outcome" class="grid" :expanded="request()->routeIs('user-income') || request()->routeIs('invoice-history')">
-                <flux:navlist.item icon="credit-card" :href="route('user-income')" :current="request()->routeIs('user-income')" wire:navigate>{{ __('Income & Top Up') }}</flux:navlist.item>
-                <flux:navlist.item icon="credit-card" :href="route('invoice-history')" :current="request()->routeIs('invoice-history')" wire:navigate>{{ __('Subscription History') }}</flux:navlist.item>
+                    // Balance = Income - Withdrawals - Subscriptions
+                    $UserSaldo = ($getIncome+$getIncomeClassBySubscription+$getIncomeCourseBySubscription) - $getWithdrawals - $getSubscription;
+                @endphp
+                <flux:navlist.item icon="credit-card" >Saldo : <b>Rp {{ number_format($UserSaldo,0,0,'.') }}</b></flux:navlist.item>
+                <flux:navlist.group expandable heading="Income & Outcome" class="grid" :expanded="request()->routeIs('user-income') || request()->routeIs('invoice-history') || request()->routeIs('withdraw')">
+                    <flux:navlist.item icon="credit-card" :href="route('user-income')" :current="request()->routeIs('user-income')" wire:navigate>{{ __('Income & Top Up') }}</flux:navlist.item>
+                    <flux:navlist.item icon="credit-card" :href="route('invoice-history')" :current="request()->routeIs('invoice-history')" wire:navigate>{{ __('Subscription History') }}</flux:navlist.item>
+                    <flux:navlist.item icon="banknotes" :href="route('withdraw')" :current="request()->routeIs('withdraw')" wire:navigate>{{ __('Withdraw') }}</flux:navlist.item>
+                </flux:navlist.group>
             </flux:navlist.group>
 
             <br>

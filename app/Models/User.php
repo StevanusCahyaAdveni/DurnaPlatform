@@ -31,6 +31,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'saldo',
     ];
 
     /**
@@ -53,7 +54,24 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'saldo' => 'decimal:2',
         ];
+    }
+
+    /**
+     * Get the user's withdrawals
+     */
+    public function withdrawals()
+    {
+        return $this->hasMany(Withdrawal::class);
+    }
+
+    /**
+     * Get the user's incomes
+     */
+    public function incomes()
+    {
+        return $this->hasMany(Income::class);
     }
 
     /**

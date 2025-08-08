@@ -16,15 +16,30 @@ class Income extends Model
         'nominal',
         'payment_method',
         'status',
+        'xendit_invoice_id',
+        'xendit_invoice_url',
+        'payment_channel',
+        'paid_at',
     ];
 
     protected $casts = [
         'user_id' => 'string',
         'deleted_at' => 'datetime',
+        'paid_at' => 'datetime',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function isPending()
+    {
+        return $this->status === 'pending';
+    }
+
+    public function isPaid()
+    {
+        return $this->status === 'paid';
     }
 }
