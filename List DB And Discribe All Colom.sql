@@ -139,3 +139,66 @@ Buat sebuah migration pada laravel dengan table seperti ini, buat modelnya juga 
 - created_at
 - updated_at
 - deleted_at
+
+16. exam with kolom :
+- id use a UUID
+- exam_name varchar 250
+- exam_description text
+- exam_deadline datetime
+- classgroup_id (get from classgroup id)
+- created_at
+- updated_at
+- delete_at
+
+17. exam_question with kolom :
+- id use a UUID
+- exam_id (get from exam id)
+- question_text text
+- question_type varchar 50
+- created_at
+- updated_at
+- delete_at
+
+18. exam_question_option with kolom :
+- id use a UUID
+- question_id (get from exam_question id)
+- option_text text
+- is_correct boolean
+- created_at
+- updated_at
+- delete_at
+
+19. exam_question_media with kolom :
+- id use a UUID
+- question_id (get from exam_question id)
+- media_name varchar 250
+- created_at
+- updated_at
+- delete_at
+
+20. exam_question_option_media with kolom :
+- id use a UUID
+- option_id (get from exam_question_option id)
+- media_name varchar 250
+- created_at
+- updated_at
+- delete_at
+
+21. exam_answer with kolom :
+- id use a UUID
+- exam_id (get from exam id)
+- user_id (get from user as answer maker)
+- point varchar 50
+- created_at
+- updated_at
+- delete_at
+
+22. exam_question_answer with kolom :
+- id use a UUID
+- exam_answer_id (get from exam_answer id)
+- question_id (get from exam_question id)
+- user_id (get from user as answer maker)
+- answer_text text
+- created_at
+- updated_at
+- delete_at
