@@ -18,6 +18,7 @@ use App\Livewire\TeacherTaskAnswer;
 use App\Livewire\AiChat;
 use App\Livewire\UserIncome;
 use App\Livewire\InvoiceHistory;
+use App\Livewire\TeacherExamDetail;
 use App\Livewire\Withdraw;
 // use App\Models\ClassTaskAnswer;
 use Illuminate\Support\Facades\Route;
@@ -52,8 +53,10 @@ Route::middleware(['auth'])->group(function () {
     // Teacher Create And Manage Class, Task and Exam
     Route::get('/teacher-class', TeacherClass::class)->name('teacher-class');
     Route::get('/teacher-task', TeacherTask::class)->name('teacher-task');
-    Route::get('/teacher-exam', TeacherExam::class)->name('teacher-exam');
     Route::get('/teacher-task-answer/{id}', TeacherTaskAnswer::class)->name('teacher-task-answer');
+    Route::get('/teacher-exam', TeacherExam::class)->name('teacher-exam');
+    Route::get('/teacher-exam-detail/{id}', TeacherExamDetail::class)->name('teacher-exam-detail');
+
 
     // AI Chat
     Route::get('/ai-chat', AiChat::class)->name('ai-chat');

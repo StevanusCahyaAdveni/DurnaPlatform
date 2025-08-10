@@ -2,52 +2,59 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ExamQuestion extends Model
 {
-    use HasFactory, SoftDeletes;
-
-    protected $keyType = 'string';
-    public $incrementing = false;
+    use HasFactory, HasUuids, SoftDeletes;
 
     protected $fillable = [
         'exam_id',
         'question_text',
         'question_type',
+        'point', // Tambahan field point
     ];
 
-    protected static function boot()
-    {
-        parent::boot();
-        static::creating(function ($model) {
-            if (empty($model->{$model->getKeyName()})) {
-                $model->{$model->getKeyName()} = Str::uuid()->toString();
-            }
-        });
-    }
+    protected $casts = [
+        'point' => 'integer',
+    ];
 
-    // Relationships
+    // Relationship to exam
     public function exam()
     {
-        return $this->belongsTo(Exam::class, 'exam_id');
+        return $this->belongsTo(Exam::class);
     }
 
+    // Relationship to question options
     public function options()
     {
         return $this->hasMany(ExamQuestionOption::class, 'question_id');
     }
 
+    // Relationship to question media
     public function media()
     {
         return $this->hasMany(ExamQuestionMedia::class, 'question_id');
     }
 
-    public function answers()
+    // Relationship to question answers
+    public function questionAnswers()
     {
         return $this->hasMany(ExamQuestionAnswer::class, 'question_id');
+    }
+
+    // Get correct option for this question
+    public function correctOption()
+    {
+        return $this->hasOne(ExamQuestionOption::class, 'question_id')->where('is_correct', true);
+    }
+
+    // Accessor for formatted point display
+    public function getFormattedPointAttribute()
+    {
+        return $this->point . ' point' . ($this->point > 1 ? 's' : '');
     }
 }

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->uuid('exam_id');
             $table->text('question_text');
             $table->string('question_type', 50);
+            $table->integer('point')->default(1); // Tambahan kolom point
             $table->timestamps();
             $table->softDeletes();
 
