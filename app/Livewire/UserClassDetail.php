@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\ClassGroup;
 use App\Models\ClassJoin;
 use App\Models\ClassChat;
+use App\Models\Exam;
 use Illuminate\Support\Facades\Auth;
 use App\Models\ClassTask; // Assuming you have a ClassTask model for tasks
 use Illuminate\Support\Str; // For string helpers like Str::uuid() if needed
@@ -16,6 +17,7 @@ class UserClassDetail extends Component
     public $newMessage = ''; // Initialize as empty
     public $singleClass; // To store class detail data
     public $taskSearch = ''; // To store task search query
+    public $examSearch = ''; // To store exam search query
     public $perPage = 20; // Number of chats displayed initially and when loading more
     public $allMessagesLoaded = false; // Flag to indicate if all messages have been loaded
     public $isLoadingMore = false; // Flag to show loading indicator
@@ -52,9 +54,6 @@ class UserClassDetail extends Component
         // Get total number of messages for this class
         $totalChatCount = ClassChat::where('class_group_id', $this->classGroupId)->count();
 
-        // Fetch chats with eager loading for the user relation
-        // Order by created_at in descending order to get the latest messages
-        // Then use take() to limit the number of messages displayed
         $classChat = ClassChat::with('user')
             ->where('class_group_id', $this->classGroupId)
             ->orderBy('created_at', 'desc') // Get the newest first
@@ -63,12 +62,16 @@ class UserClassDetail extends Component
             ->reverse(); // Reverse the order so the newest are at the bottom
 
         $classTaskQuery = ClassTask::select('class_tasks.*', 'users.name', 'class_groups.class_name')->join('class_groups', 'class_tasks.class_group_id', '=', 'class_groups.id')->join('users', 'class_groups.user_id', '=', 'users.id')->where('class_groups.id', $this->classGroupId);
-
         if ($this->taskSearch != '') {
             $classTaskQuery->where('class_tasks.task_name', 'like', '%' . $this->taskSearch . '%');
         }
-
         $classTask= $classTaskQuery->orderBy('class_tasks.created_at', 'desc')->get();
+
+        $classExamQuery = Exam::select('exams.*', 'users.name', 'class_groups.class_name')->join('class_groups', 'exams.classgroup_id', '=', 'class_groups.id')->join('users', 'class_groups.user_id', '=', 'users.id')->where('class_groups.id', $this->classGroupId);
+        if ($this->examSearch != '') {
+            $classExamQuery->where('exams.exam_name', 'like', '%' . $this->examSearch . '%');
+        }
+        $classExam = $classExamQuery->orderBy('exams.created_at', 'desc')->get();
 
         // Check if all messages have been loaded
         $this->allMessagesLoaded = ($this->perPage >= $totalChatCount);
@@ -85,6 +88,7 @@ class UserClassDetail extends Component
             'classChat' => $classChat,
             'classTask' => $classTask,
             'classPeople' => $classPeople,
+            'classExam' => $classExam,
         ]);
     }
 

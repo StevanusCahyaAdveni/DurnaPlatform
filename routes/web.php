@@ -14,6 +14,7 @@ use App\Livewire\TeacherTask;
 use App\Livewire\TeacherExam;
 use App\Livewire\UpgradeRole;
 use App\Livewire\UserTaskAnswer;
+use App\Livewire\UserExamAnswer;
 use App\Livewire\TeacherTaskAnswer;
 use App\Livewire\AiChat;
 use App\Livewire\UserIncome;
@@ -61,8 +62,9 @@ Route::middleware(['auth'])->group(function () {
     // AI Chat
     Route::get('/ai-chat', AiChat::class)->name('ai-chat');
 
-    // User create and manage tasks answer
+    // User create and manage tasks and exam answer
     Route::get('/user-task-answer/{id}', UserTaskAnswer::class)->name('user-task-answer');
+    Route::get('/user-exam-answer/{id}', UserExamAnswer::class)->name('user-exam-answer');
 
     // User Money Income
     Route::get('/user-income', UserIncome::class)->name('user-income');

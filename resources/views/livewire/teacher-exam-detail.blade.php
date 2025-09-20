@@ -82,7 +82,7 @@
         @if(isset($questions) && $questions->count() > 0)
             <div class="space-y-4">
                 @foreach($questions as $question)
-                    <flux:callout class=" shadow-sm">
+                    <flux:callout class=" shadow-sm" lazy='on-load'>
                         <div class="flex justify-between items-start mb-2">
                             <div class="flex-1">
                                 <flux:text>{{ $question->question_text }}</flux:text>

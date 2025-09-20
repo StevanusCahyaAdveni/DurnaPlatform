@@ -163,6 +163,21 @@
             </script>
         </div>
     @elseif ($layoutStatus === 'exams')
+        <flux:input size="sm" placeholder="Searching..." wire:model.live="examSearch" class="mb-3" />
+        @foreach($classExam as $exam)
+        <flux:callout icon="exclamation-circle" class="mb-2">
+            <flux:callout.heading  class="mb-0">{{ $exam->exam_name }}</flux:callout.heading>
+            <flux:callout.text>
+                <flux:badge variant="pill" color="green" size="sm">{{ $exam->class_name }}</flux:badge>
+                <flux:badge variant="pill" icon="calendar" color="red" size="sm">{{ date('d F Y', strtotime($exam->exam_deadline)) }}</flux:badge><br>
+                {!! Str::limit(strip_tags($exam->exam_description), 100) !!}...
+                <div class="flex" >
+                    <flux:spacer />
+                    <flux:button size="sm" wire:navigate class="mt-3 mb-0" href="/user-exam-answer/{{ $exam->id }}" variant="danger">Do the Exam</flux:button>
+                </div>
+            </flux:callout.text>
+        </flux:callout>
+        @endforeach
     @elseif ($layoutStatus === 'people')
         <flux:callout>
             <div>
